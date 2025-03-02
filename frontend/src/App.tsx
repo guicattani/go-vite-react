@@ -26,7 +26,7 @@ function App() {
           <img src={reactLogo} className='logo react' alt='React logo' />
         </a>
       </div>
-      <h1>Golang + Vite + React</h1>
+      <h1>Go + Vite + React</h1>
       <h2>{messageFromServer}</h2>
     </>
   )

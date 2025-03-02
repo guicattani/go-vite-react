@@ -2,5 +2,8 @@
 /build
 /bin
 /dist
+/node_modules
+/frontend/tmp
+/.vscode
 
-/.env
+.env

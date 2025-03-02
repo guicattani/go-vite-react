@@ -1,0 +1,18 @@
+{
+  "name": "go_vite_react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -c bgYellow,bgCyan.white --names REACT,GO \"cd frontend && yarn dev\" \"air\"",
+    "install": "go install github.com/air-verse/air@latest && cd frontend && yarn && yarn build && cd .. && go get",
+    "build": "cd frontend && yarn build && cd .. && ENV=prod go build -buildvcs=false -o ./bin/go-vite ./main.go"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.6"
+  }
+}

@@ -29,11 +29,13 @@ func RegisterHandlers(e *echo.Echo) {
 		setupDevProxy(e)
 		return
 	}
+
 	// Use the static assets from the dist directory
 	e.FileFS("/", "index.html", distIndexHTML)
 	e.StaticFS("/", distDirFS)
+
 	// This is needed to serve the index.html file for all routes that are not /api/*
-	// neede for SPA to work when loading a specific url directly
+	// needed for SPA to work when loading a specific url directly
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Skipper: func(c echo.Context) bool {
 			// Skip the proxy if the prefix is /api
@@ -51,16 +53,26 @@ func RegisterHandlers(e *echo.Echo) {
 }
 
 func setupDevProxy(e *echo.Echo) {
-	url, err := url.Parse("http://localhost:5173")
-	if err != nil {
-		log.Fatal(err)
+  if _, ok := os.LookupEnv("FRONTEND_URL"); !ok {
+    panic("FRONTEND_URL env not found!")
+  }
+
+	if os.Getenv("FRONTEND_URL") == "" {
+		panic("FRONTEND_URL env empty!")
 	}
-	// Setep a proxy to the vite dev server on localhost:5173
+
+	url, err := url.Parse(os.Getenv("FRONTEND_URL"))
+	if err != nil {
+		panic(err)
+	}
+
+	// Setup a proxy to the vite dev server on localhost:5173
 	balancer := middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
 		{
 			URL: url,
 		},
 	})
+
 	e.Use(middleware.ProxyWithConfig(middleware.ProxyConfig{
 		Balancer: balancer,
 		Skipper: func(c echo.Context) bool {

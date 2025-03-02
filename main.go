@@ -22,9 +22,9 @@ func main() {
 	// Setup the API Group
 	api := e.Group("/api")
 
-	// Basic APi endpoint
+	// Basic API endpoint
 	api.GET("/message", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, map[string]string{"message": "Hello, from the golang World!"})
+		return c.JSON(http.StatusOK, map[string]string{"message": "Hello, from the Gopher World!"})
 	})
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", 3000)))
